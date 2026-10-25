@@ -35,6 +35,7 @@ async function migrate() {
         id SERIAL PRIMARY KEY,
         section_id VARCHAR(50) NOT NULL REFERENCES catalog_sections(id) ON DELETE CASCADE,
         name VARCHAR(100) NOT NULL,
+        logo_url TEXT,
         price_text TEXT NOT NULL,
         sort_order INT NOT NULL DEFAULT 0,
         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,

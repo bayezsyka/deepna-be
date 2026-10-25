@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
       'SELECT id, label, sort_order FROM catalog_sections ORDER BY sort_order ASC'
     );
     const itemsRes = await db.query(
-      'SELECT id, section_id, name, price_text, sort_order FROM catalog_items ORDER BY sort_order ASC, id ASC'
+      'SELECT id, section_id, name, logo_url, price_text, sort_order FROM catalog_items ORDER BY sort_order ASC, id ASC'
     );
 
     const itemsBySection = {};
@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
       itemsBySection[item.section_id].push({
         id: item.id,
         name: item.name,
+        logoUrl: item.logo_url || null,
         priceText: item.price_text,
       });
     }
