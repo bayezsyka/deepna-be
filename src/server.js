@@ -27,13 +27,25 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'deepna-be',
-    timestamp: new Date().toISOString(),
-  });
+// Health check (sekaligus ping database Neon agar selalu fresh)
+app.get('/health', async (req, res) => {
+  try {
+    await db.query('SELECT 1 AS alive');
+    res.json({
+      status: 'ok',
+      service: 'deepna-be',
+      database: 'connected',
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      service: 'deepna-be',
+      database: 'disconnected',
+      error: err.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 app.get('/', (req, res) => {
